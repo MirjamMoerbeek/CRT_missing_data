@@ -3,7 +3,7 @@ source("functions.R")
 server <- function(input, output) {
 
 ###########################################################################################################################################################################
-### attrition graphs
+### dropout graphs
 ###########################################################################################################################################################################
 
   output$survivalplot <- renderPlot({
@@ -53,16 +53,48 @@ server <- function(input, output) {
   
   output$Resultsplot <- renderPlot({
     
-    validate(need(input$maxweeks>=input$R1,"Number of weeks in Design 1 cannot exceed the maximum duration of the trial")
-    )
-    validate(need(input$maxweeks>=input$R2,"Number of weeks in Design 2 cannot exceed the maximum duration of the trial")
-    )
-    validate(need(input$maxweeks>=input$R3,"Number of weeks in Design 3 cannot exceed the maximum duration of the trial")
-    )
-    validate(need(input$maxweeks>=input$R4,"Number of weeks in Design 4 cannot exceed the maximum duration of the trial")
-    )
-    validate(need(input$maxweeks>=input$R5,"Number of weeks in Design 5 cannot exceed the maximum duration of the trial")
-    )
+    validate(need(input$maxweeks>=1,"Maximum duration of the trial in weeks should be at least one"))
+    validate(need(input$maxweeks==round(input$maxweeks),"Maximum number of weeks in the trial should be an integer"))
+    
+    validate(need(input$maxweeks>=input$R1,"Number of weeks in Design 1 cannot exceed the maximum duration of the trial"))
+    validate(need(input$maxweeks>=input$R2,"Number of weeks in Design 2 cannot exceed the maximum duration of the trial"))
+    validate(need(input$maxweeks>=input$R3,"Number of weeks in Design 3 cannot exceed the maximum duration of the trial"))
+    validate(need(input$maxweeks>=input$R4,"Number of weeks in Design 4 cannot exceed the maximum duration of the trial"))
+    validate(need(input$maxweeks>=input$R5,"Number of weeks in Design 5 cannot exceed the maximum duration of the trial"))
+
+    validate(need(input$R1==round(input$R1),"Number of weeks in Design 1 should be an integer"))
+    validate(need(input$R2==round(input$R2),"Number of weeks in Design 2 should be an integer"))
+    validate(need(input$R3==round(input$R3),"Number of weeks in Design 3 should be an integer"))
+    validate(need(input$R4==round(input$R4),"Number of weeks in Design 4 should be an integer"))
+    validate(need(input$R5==round(input$R5),"Number of weeks in Design 5 should be an integer"))
+
+    validate(need(input$R1>=1,"Number of weeks in Design 1 should be at least one"))
+    validate(need(input$R2>=1,"Number of weeks in Design 2 should be at least one"))
+    validate(need(input$R3>=1,"Number of weeks in Design 3 should be at least one"))
+    validate(need(input$R4>=1,"Number of weeks in Design 4 should be at least one"))
+    validate(need(input$R5>=1,"Number of weeks in Design 5 should be at least one"))
+
+    validate(need(input$k1>=1,"Number of clusters per condition in Design 1 should be at least one"))
+    validate(need(input$k2>=1,"Number of clusters per condition in Design 2 should be at least one"))
+    validate(need(input$k3>=1,"Number of clusters per condition in Design 3 should be at least one"))
+    validate(need(input$k4>=1,"Number of clusters per condition in Design 4 should be at least one"))
+    validate(need(input$k5>=1,"Number of clusters per condition in Design 5 should be at least one"))
+
+    validate(need(input$k1==round(input$k1),"Number of clusters per condition in Design 1 should be an integer"))
+    validate(need(input$k2==round(input$k2),"Number of clusters per condition in Design 2 should be an integer"))
+    validate(need(input$k3==round(input$k3),"Number of clusters per condition in Design 3 should be an integer"))
+    validate(need(input$k4==round(input$k4),"Number of clusters per condition in Design 4 should be an integer"))
+    validate(need(input$k5==round(input$k5),"Number of clusters per condition in Design 5 should be an integer"))
+
+    validate(need(input$ICC>=0&input$ICC<=1,"Intraclass correlation coefficient should be between 0 and 1"))
+    validate(need(input$decay>=0&input$decay<=1,"Decay parameter should be between 0 and 1"))
+    validate(need(input$alpha>=0&input$alpha<=1,"Type I error rate should be between 0 and 1"))
+    validate(need(input$delta!=0,"Effect size should be unequal to zero"))
+
+    validate(need(input$omega0>=0&input$omega0<=1,"Parameter omega in control should be between 0 and 1"))
+    validate(need(input$gamma0>0,"Parameter gamma in control should be above 0"))
+    validate(need(input$omega1>=0&input$omega1<=1,"Parameter omega in intervention should be between 0 and 1"))
+    validate(need(input$gamma1>0,"Parameter gamma in intervention should be above 0"))
     
     m.min=input$m[1]
     m.max=input$m[2]
@@ -164,18 +196,50 @@ server <- function(input, output) {
   ### Results table
   ###########################################################################################################################################################################
   
-  output$ResultsTable <- renderDataTable({
+  output$ResultsTable <- DT::renderDataTable({
     
-    validate(need(input$maxweeks>=input$R1,"Number of weeks in Design 1 cannot exceed the maximum duration of the trial")
-    )
-    validate(need(input$maxweeks>=input$R2,"Number of weeks in Design 2 cannot exceed the maximum duration of the trial")
-    )
-    validate(need(input$maxweeks>=input$R3,"Number of weeks in Design 3 cannot exceed the maximum duration of the trial")
-    )
-    validate(need(input$maxweeks>=input$R4,"Number of weeks in Design 4 cannot exceed the maximum duration of the trial")
-    )
-    validate(need(input$maxweeks>=input$R5,"Number of weeks in Design 5 cannot exceed the maximum duration of the trial")
-    )
+    validate(need(input$maxweeks>=1,"Maximum duration of the trial in weeks should be at least one"))
+    validate(need(input$maxweeks==round(input$maxweeks),"Maximum number of weeks in the trial should be an integer"))
+    
+    validate(need(input$maxweeks>=input$R1,"Number of weeks in Design 1 cannot exceed the maximum duration of the trial"))
+    validate(need(input$maxweeks>=input$R2,"Number of weeks in Design 2 cannot exceed the maximum duration of the trial"))
+    validate(need(input$maxweeks>=input$R3,"Number of weeks in Design 3 cannot exceed the maximum duration of the trial"))
+    validate(need(input$maxweeks>=input$R4,"Number of weeks in Design 4 cannot exceed the maximum duration of the trial"))
+    validate(need(input$maxweeks>=input$R5,"Number of weeks in Design 5 cannot exceed the maximum duration of the trial"))
+    
+    validate(need(input$R1==round(input$R1),"Number of weeks in Design 1 should be an integer"))
+    validate(need(input$R2==round(input$R2),"Number of weeks in Design 2 should be an integer"))
+    validate(need(input$R3==round(input$R3),"Number of weeks in Design 3 should be an integer"))
+    validate(need(input$R4==round(input$R4),"Number of weeks in Design 4 should be an integer"))
+    validate(need(input$R5==round(input$R5),"Number of weeks in Design 5 should be an integer"))
+    
+    validate(need(input$R1>=1,"Number of weeks in Design 1 should be at least one"))
+    validate(need(input$R2>=1,"Number of weeks in Design 2 should be at least one"))
+    validate(need(input$R3>=1,"Number of weeks in Design 3 should be at least one"))
+    validate(need(input$R4>=1,"Number of weeks in Design 4 should be at least one"))
+    validate(need(input$R5>=1,"Number of weeks in Design 5 should be at least one"))
+    
+    validate(need(input$k1>=1,"Number of clusters per condition in Design 1 should be at least one"))
+    validate(need(input$k2>=1,"Number of clusters per condition in Design 2 should be at least one"))
+    validate(need(input$k3>=1,"Number of clusters per condition in Design 3 should be at least one"))
+    validate(need(input$k4>=1,"Number of clusters per condition in Design 4 should be at least one"))
+    validate(need(input$k5>=1,"Number of clusters per condition in Design 5 should be at least one"))
+    
+    validate(need(input$k1==round(input$k1),"Number of clusters per condition in Design 1 should be an integer"))
+    validate(need(input$k2==round(input$k2),"Number of clusters per condition in Design 2 should be an integer"))
+    validate(need(input$k3==round(input$k3),"Number of clusters per condition in Design 3 should be an integer"))
+    validate(need(input$k4==round(input$k4),"Number of clusters per condition in Design 4 should be an integer"))
+    validate(need(input$k5==round(input$k5),"Number of clusters per condition in Design 5 should be an integer"))
+    
+    validate(need(input$ICC>=0&input$ICC<=1,"Intraclass correlation coefficient should be between 0 and 1"))
+    validate(need(input$decay>=0&input$decay<=1,"Decay parameter should be between 0 and 1"))
+    validate(need(input$alpha>=0&input$alpha<=1,"Type I error rate should be between 0 and 1"))
+    validate(need(input$delta!=0,"Effect size should be unequal to zero"))
+    
+    validate(need(input$omega0>=0&input$omega0<=1,"Parameter omega in control should be between 0 and 1"))
+    validate(need(input$gamma0>0,"Parameter gamma in control should be above 0"))
+    validate(need(input$omega1>=0&input$omega1<=1,"Parameter omega in intervention should be between 0 and 1"))
+    validate(need(input$gamma1>0,"Parameter gamma in intervention should be above 0"))
     
     n=input$nrclusters
     m=input$nrsubjects
@@ -263,7 +327,9 @@ server <- function(input, output) {
     data=round(cbind(seq(m.min,m.max),var1.vec,var2.vec,var3.vec,var4.vec,var5.vec,power1.vec,power2.vec,power3.vec,power4.vec,power5.vec,RE1.vec,RE2.vec,RE3.vec,RE4.vec,RE5.vec),5)
     data=as.data.frame(data)
     colnames(data)<-c("m","Variance 1","Variance 2","Variance 3","Variance 4","Variance 5","Power 1", "Power 2", "Power 3","Power 4","Power 5","RE1 ","RE 2","RE 3","RE 4","RE 5")
-    data
+    
+    datatable(data, options = list(pageLength = 25,dom = 'tl'))
+  
   })
   
 }
