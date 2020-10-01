@@ -1,11 +1,12 @@
 library(shiny)
 library(shinydashboard)
+library(DT)
 
 ui <- dashboardPage(skin="yellow",   
-  dashboardHeader(title = "The effect of missing data on design efficiency in cross-sectional multi-period parallel-arm cluster randomized trials.",disable = TRUE),
+  dashboardHeader(title = "The effect of missing data on design efficiency in cross-sectional multi-period two-arm parallel cluster randomized trials.",disable = TRUE),
   dashboardSidebar(disable = TRUE),
   dashboardBody(
-    titlePanel("The effect of missing data on design efficiency in cross-sectional multi-period parallel-arm cluster randomized trials"),
+    titlePanel("The effect of missing data on design efficiency in cross-sectional multi-period two-arm parallel cluster randomized trials"),
        fluidRow(
       column(width=4,
        
@@ -106,7 +107,7 @@ ui <- dashboardPage(skin="yellow",
       ),
       
       tabBox(
-        title = "Attrition function",width=4,  
+        title = "Dropout function",width=4,  
         # The id lets us use input$tabset1 on the server to find the current tab
         id = "tabset1", height = 500,
         tabPanel("Input parameters", 
@@ -156,7 +157,7 @@ ui <- dashboardPage(skin="yellow",
         ),
        
         tabPanel("Table", 
-                 dataTableOutput(outputId = "ResultsTable")
+                 DT::dataTableOutput(outputId = "ResultsTable")
         )
       )
 
