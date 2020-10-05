@@ -159,11 +159,11 @@ server <- function(input, output) {
     max.RE=max(var1.vec/var2.vec,var1.vec/var3.vec,var1.vec/var4.vec,var1.vec/var5.vec)
     if(max.RE<1) max.RE=1
     
-    power1.vec=pnorm(delta/sqrt(var1.vec)-qnorm(1-alpha/2))
-    power2.vec=pnorm(delta/sqrt(var2.vec)-qnorm(1-alpha/2))
-    power3.vec=pnorm(delta/sqrt(var3.vec)-qnorm(1-alpha/2))
-    power4.vec=pnorm(delta/sqrt(var4.vec)-qnorm(1-alpha/2))
-    power5.vec=pnorm(delta/sqrt(var5.vec)-qnorm(1-alpha/2))
+    power1.vec=pnorm(delta/sqrt(var1.vec)-qnorm(1-alpha))
+    power2.vec=pnorm(delta/sqrt(var2.vec)-qnorm(1-alpha))
+    power3.vec=pnorm(delta/sqrt(var3.vec)-qnorm(1-alpha))
+    power4.vec=pnorm(delta/sqrt(var4.vec)-qnorm(1-alpha))
+    power5.vec=pnorm(delta/sqrt(var5.vec)-qnorm(1-alpha))
     par(mfrow=c(1,3)) 
    
    ### Variance graphs
